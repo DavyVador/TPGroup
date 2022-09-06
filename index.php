@@ -2,7 +2,7 @@
 
 class Form
 {
-   protected $textform;
+    protected string $textForm;
 
     public function __construct(string $action, string $method, string $legend)
     {
@@ -13,13 +13,13 @@ class Form
         ';
     }
 
-    public
-    function setText(string $type, string $name, string $id): void
+    public function setText(string $type, string $name, string $id): void
     {
+
         $this->textForm =
             $this->textForm .
             '           <div>
-                    <label for="' . $name . '">Entrez votre ' . $name . '</label>
+                    <label for="' . $id . '">Entrez votre ' . $name . '</label>
                     <br>
                     <input type="' . $type . '" name="' . $name . '" id="' . $id . '">
                     </div>
@@ -27,8 +27,7 @@ class Form
         ';
     }
 
-    public
-    function setSubmit(string $value): void
+    public function setSubmit(string $value): void
     {
         $this->textForm =
             $this->textForm .
@@ -40,22 +39,19 @@ class Form
         ';
     }
 
-    public
-    function getForm(): string
+    public function getForm(): string
     {
         return $this->textForm;
     }
 }
-
-class Form2 extends Form{
-
-    public function setRadioCheck(string $type, string $name, string $value, string $id): void
+class Form2 extends Form
+{
+    public function setRadioCheck(string $type, string $label, string $name, string $value, string $id): void
     {
-
         $this->textForm = $this->textForm .
             '  <div>
-                <label for="' . $name .'">' . $name . '</label>
-                <input type="'. $type .'" name="' . $name . '" value="' . $value . '" id= "' . $id. '">
+                <label for="' . $id . '">' . $label . '</label>
+                <input type="' . $type . '" name="' . $name . '" value="' . $value . '" id= "' . $id . '">
         </div>
         ';
     }
@@ -64,9 +60,12 @@ class Form2 extends Form{
 $form2 = new Form2('./formulaire.php', 'get', 'inscription');
 $form2->setText('text', 'nom', 'nom');
 $form2->setText('text', 'prénom', 'prénom');
+$form2->setRadioCheck('radio', 'fr', 'nationalite', 'email', 'email');
+$form2->setRadioCheck('radio', 'eng', 'nationalite', 'phone', 'phone');
+$form2->setRadioCheck('checkBox', 'salut', 'coucou', 'email', 'email');
+$form2->setRadioCheck('checkBox', 'hi', 'coucou', 'phone', 'phone');
 $form2->setText('date', 'date de naissance', 'date de naissance');
 $form2->setText('email', 'email', 'email');
-$form2->setRadioCheck('radio','email', 'email', 'email');
-$form2->setRadioCheck('checkBox', 'email', 'email', 'email');
+
 $form2->setSubmit('Envoyer');
 echo $form2->getForm();
