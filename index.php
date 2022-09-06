@@ -1,6 +1,7 @@
 <?php
 
-class Form {
+class Form
+{
     private string $action;
     private string $method;
     private string $legend;
@@ -10,7 +11,8 @@ class Form {
     private string $name;
     private string $id;
 
-    public function __construct(string $action, string $method, string $legend){
+    public function __construct(string $action, string $method, string $legend)
+    {
         $this->action = $action;
         $this->method = $method;
         $this->legend = $legend;
@@ -21,43 +23,47 @@ class Form {
         ';
     }
 
-
-public
-function setText(string $type, string $name, string $id){
-    $this->type = $type;
-    $this->name = $name;
-    $this->id = $id;
-    $this->textForm =
-        $this->textForm .
-        '           <div>
+    public
+    function setText(string $type, string $name, string $id): void
+    {
+        $this->type = $type;
+        $this->name = $name;
+        $this->id = $id;
+        $this->textForm =
+            $this->textForm .
+            '           <div>
                     <label for="' . $this->name . '">Entrez votre ' . $this->name . '</label>
                     <br>
                     <input type="' . $this->type . '" name="' . $this->name . '" id="' . $this->id . '">
                     </div>
                     <br>
         ';
-}
-public
-function setSubmit(string $value){
-    $this->value = $value;
-    $this->textForm =
-        $this->textForm .
-        '           <div>
+    }
+
+    public
+    function setSubmit(string $value): void
+    {
+        $this->value = $value;
+        $this->textForm =
+            $this->textForm .
+            '           <div>
                     <input type="submit" value="' . $this->value . '">
                     </div>
             </fieldset>
          </form>
         ';
+    }
+
+    public
+    function getForm(): string
+    {
+        return $this->textForm;
+    }
+
 }
 
-public
-function getForm(){
-    return $this->textForm;
-}
-
-}
-
-class form2 extends Form {
+class form2 extends Form
+{
 
 }
 
