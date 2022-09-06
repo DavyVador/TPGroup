@@ -1,16 +1,16 @@
 <?php
 
 class Form {
-    private $action;
-    private $method;
-    private $legend;
-    private $textForm;
-    private $value;
-    private $type;
-    private $name;
-    private $id;
+    private string $action;
+    private string $method;
+    private string $legend;
+    private string $textForm;
+    private string $value;
+    private string $type;
+    private string $name;
+    private string $id;
 
-    public function __construct($action, $method, $legend){
+    public function __construct(string $action, string $method, string $legend){
         $this->action = $action;
         $this->method = $method;
         $this->legend = $legend;
@@ -23,7 +23,7 @@ class Form {
 
 
 public
-function setText($type, $name, $id){
+function setText(string $type, string $name, string $id){
     $this->type = $type;
     $this->name = $name;
     $this->id = $id;
@@ -38,7 +38,7 @@ function setText($type, $name, $id){
         ';
 }
 public
-function setSubmit($value){
+function setSubmit(string $value){
     $this->value = $value;
     $this->textForm =
         $this->textForm .
@@ -52,15 +52,20 @@ function setSubmit($value){
 
 public
 function getForm(){
-    echo $this->textForm;
+    return $this->textForm;
 }
 
 }
+
+class form2 extends Form {
+
+}
+
 
 $form1 = new Form('./formulaire.php', 'get', 'Inscription');
 $form1->setText('text', 'nom', 'nom');
-$form1->setText('text', 'prénom', 'prénom');
-$form1->setText('date', 'date de naissance', 'date de naissance');
+$form1->setText('text', 'firstname', 'firstname');
+$form1->setText('date', 'birthday', 'birthday');
 $form1->setText('email', 'email', 'email');
 $form1->setSubmit('Envoyer');
-$form1->getForm();
+echo $form1->getForm();
