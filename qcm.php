@@ -13,17 +13,40 @@ class Qcm
     {
     }
 
-    public function generer()
+    public function generer(): string
     {
+        var_dump($_POST);
+        if (!empty($_POST)) {
+            foreach ($_POST as $key => $value) {
+                $reponse = $this->questions[$key]->getReponse($value);
+                if ($reponse->getStatut() == Reponse::BONNE_REPONSE) {
+                    echo 'Bonne reponse : ' . $reponse->getReponse();
+                } else {
+                    echo 'Mauvaise reponse : ' . $reponse->getReponse();
+                    echo 'La bonne reponse : ' . $this->questions[$key]->getBonneReponse()->getReponse();
+                }
+            }
+        }
+        $code = '<form method="post" action="">';
+        foreach ($this->questions as $indexquestion => $question) {
+            $code .= '<h1>' . $question->getQuestion() . '</h1>';
+            foreach ($question->getReponses() as $index => $reponse) {
+                $code .= '<input type="radio" name="' . $indexquestion . '" value="' . $index . '">' . $reponse->getReponse() . '</input>';
+            }
+        }
+        $code .= '<input type="submit" value="TESTER"></input>';
+        $code .= '</form>';
+        return $code;
     }
 }
 
 class Question
 {
-    protected $question;
+    protected string $question;
     protected array $reponses = [];
+    protected string $explication;
 
-    public function construct($question)
+    public function __construct(string $question)
     {
         $this->question = $question;
     }
@@ -32,13 +55,44 @@ class Question
     {
         $this->reponses[] = $reponse;
     }
-
-
-    public function setExpliquations()
+    public function getReponses(): array
     {
+        return $this->reponses;
+    }
+
+    public function setExpliquations($explication)
+    {
+        $this->explication = $explication;
+    }
+    public function getExplication(): string
+    {
+        return $this->explication;
+    }
+    public function getQuestion(): string
+    {
+        return $this->question;
+    }
+    public function getReponse(int $index): Reponse
+    {
+        return $this->reponses[$index];
+    }
+    public function getNumBonneReponse(): int
+    {
+        foreach ($this->reponses as $index => $reponse) {
+            if ($reponse->getStatut() == Reponse::BONNE_REPONSE) {
+                return $index;
+            }
+        }
+    }
+    public function getBonneReponse(): Reponse
+    {
+        foreach ($this->reponses as $reponse) {
+            if ($reponse->getStatut() == Reponse::BONNE_REPONSE) {
+                return $reponse;
+            }
+        }
     }
 }
-
 class Reponse
 {
     const BONNE_REPONSE = true;
@@ -47,7 +101,7 @@ class Reponse
     private bool $statut;
 
 
-    public function construct($reponse, $statut = self::MAUVAISE_REPONSE)
+    public function __construct($reponse, $statut = self::MAUVAISE_REPONSE)
     {
         $this->reponse = $reponse;
         $this->statut = $statut;
@@ -70,7 +124,7 @@ $question1->ajouterReponse(new Reponse('Des mielpops'));
 $question1->ajouterReponse(new Reponse('Des chocapics', Reponse::BONNE_REPONSE));
 $question1->ajouterReponse(new Reponse('Des actimels'));
 $qcm->ajouterQuestions($question1);
-$qcm->generer();
+echo $qcm->generer();
 
 echo '<pre>';
 print_r($qcm);
