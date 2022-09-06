@@ -2,39 +2,26 @@
 
 class Form
 {
-    private string $action;
-    private string $method;
-    private string $legend;
-    private string $textForm;
-    private string $value;
-    private string $type;
-    private string $name;
-    private string $id;
+   protected $textform;
 
     public function __construct(string $action, string $method, string $legend)
     {
-        $this->action = $action;
-        $this->method = $method;
-        $this->legend = $legend;
         $this->textForm =
-            '<form action="' . $this->action . '" method="' . $this->method . '">
+            '<form action="' . $action . '" method="' . $method . '">
             <fieldset>
-                <legend>' . $this->legend . '</legend>
+                <legend>' . $legend . '</legend>
         ';
     }
 
     public
     function setText(string $type, string $name, string $id): void
     {
-        $this->type = $type;
-        $this->name = $name;
-        $this->id = $id;
         $this->textForm =
             $this->textForm .
             '           <div>
-                    <label for="' . $this->name . '">Entrez votre ' . $this->name . '</label>
+                    <label for="' . $name . '">Entrez votre ' . $name . '</label>
                     <br>
-                    <input type="' . $this->type . '" name="' . $this->name . '" id="' . $this->id . '">
+                    <input type="' . $type . '" name="' . $name . '" id="' . $id . '">
                     </div>
                     <br>
         ';
@@ -43,11 +30,10 @@ class Form
     public
     function setSubmit(string $value): void
     {
-        $this->value = $value;
         $this->textForm =
             $this->textForm .
             '           <div>
-                    <input type="submit" value="' . $this->value . '">
+                    <input type="submit" value="' . $value . '">
                     </div>
             </fieldset>
          </form>
@@ -59,19 +45,28 @@ class Form
     {
         return $this->textForm;
     }
-
 }
 
-class form2 extends Form
-{
+class Form2 extends Form{
 
+    public function setRadioCheck(string $type, string $name, string $value, string $id): void
+    {
+
+        $this->textForm = $this->textForm .
+            '  <div>
+                <label for="' . $name .'">' . $name . '</label>
+                <input type="'. $type .'" name="' . $name . '" value="' . $value . '" id= "' . $id. '">
+        </div>
+        ';
+    }
 }
 
-
-$form1 = new Form('./formulaire.php', 'get', 'Inscription');
-$form1->setText('text', 'nom', 'nom');
-$form1->setText('text', 'firstname', 'firstname');
-$form1->setText('date', 'birthday', 'birthday');
-$form1->setText('email', 'email', 'email');
-$form1->setSubmit('Envoyer');
-echo $form1->getForm();
+$form2 = new Form2('./formulaire.php', 'get', 'inscription');
+$form2->setText('text', 'nom', 'nom');
+$form2->setText('text', 'prénom', 'prénom');
+$form2->setText('date', 'date de naissance', 'date de naissance');
+$form2->setText('email', 'email', 'email');
+$form2->setRadioCheck('radio','email', 'email', 'email');
+$form2->setRadioCheck('checkBox', 'email', 'email', 'email');
+$form2->setSubmit('Envoyer');
+echo $form2->getForm();
