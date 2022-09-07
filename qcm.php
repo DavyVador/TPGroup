@@ -3,26 +3,29 @@
 class Qcm
 {
     private array $questions = array();
+    private array $appreciations = array();
 
-    public function ajouterQuestions(Question $question)
+    public function ajouterQuestions(Question $question): void
     {
         $this->questions[] = $question;
     }
 
-    public function setAppreciation()
+    public function setAppreciation($appreciations): void
     {
+        $this->appreciations[] = $appreciations;
     }
 
     public function generer(): string
     {
-        var_dump($_POST);
+
         if (!empty($_POST)) {
             foreach ($_POST as $key => $value) {
                 $reponse = $this->questions[$key]->getReponse($value);
-                if ($reponse->getStatut() == Reponse::BONNE_REPONSE) {
-                    echo 'Bonne reponse : ' . $reponse->getReponse();
+                if ($reponse->getStatut() === Reponse::BONNE_REPONSE) {
+                    echo 'Bonne reponse : ' . $reponse->getReponse() . '</br> ';
+                    echo  $this->questions[$key]->getExplication() ;
                 } else {
-                    echo 'Mauvaise reponse : ' . $reponse->getReponse();
+                    echo 'Mauvaise reponse : ' . $reponse->getReponse(). '</br> ';
                     echo 'La bonne reponse : ' . $this->questions[$key]->getBonneReponse()->getReponse();
                 }
             }
@@ -34,12 +37,12 @@ class Qcm
                 $code .= '<input type="radio" name="' . $indexquestion . '" value="' . $index . '">' . $reponse->getReponse() . '</input>';
             }
         }
-        $code .= '<input type="submit" value="TESTER"></input>';
+
+        $code .= '<input type="submit" value="TESTER"/>';
         $code .= '</form>';
         return $code;
     }
 }
-
 class Question
 {
     protected string $question;
@@ -51,7 +54,7 @@ class Question
         $this->question = $question;
     }
 
-    public function ajouterReponse(Reponse $reponse)
+    public function ajouterReponse(Reponse $reponse): void
     {
         $this->reponses[] = $reponse;
     }
@@ -60,7 +63,7 @@ class Question
         return $this->reponses;
     }
 
-    public function setExpliquations($explication)
+    public function setExpliquations($explication): void
     {
         $this->explication = $explication;
     }
@@ -79,7 +82,7 @@ class Question
     public function getNumBonneReponse(): int
     {
         foreach ($this->reponses as $index => $reponse) {
-            if ($reponse->getStatut() == Reponse::BONNE_REPONSE) {
+            if ($reponse->getStatut() === Reponse::BONNE_REPONSE) {
                 return $index;
             }
         }
@@ -87,7 +90,7 @@ class Question
     public function getBonneReponse(): Reponse
     {
         foreach ($this->reponses as $reponse) {
-            if ($reponse->getStatut() == Reponse::BONNE_REPONSE) {
+            if ($reponse->getStatut() === Reponse::BONNE_REPONSE) {
                 return $reponse;
             }
         }
@@ -95,8 +98,8 @@ class Question
 }
 class Reponse
 {
-    const BONNE_REPONSE = true;
-    const MAUVAISE_REPONSE = false;
+    public const BONNE_REPONSE = true;
+    public const MAUVAISE_REPONSE = false;
     private string $reponse;
     private bool $statut;
 
@@ -107,11 +110,11 @@ class Reponse
         $this->statut = $statut;
     }
 
-    public function getReponse()
+    public function getReponse(): string
     {
         return $this->reponse;
     }
-    public function getStatut()
+    public function getStatut(): bool
     {
         return $this->statut;
     }
@@ -123,12 +126,13 @@ $question1 = new Question('Et paf, ça fait ...');
 $question1->ajouterReponse(new Reponse('Des mielpops'));
 $question1->ajouterReponse(new Reponse('Des chocapics', Reponse::BONNE_REPONSE));
 $question1->ajouterReponse(new Reponse('Des actimels'));
+$question1->setExpliquations('Et oui, la célèbre citation est « Et paf, ça fait des chocapics ! »');
 $qcm->ajouterQuestions($question1);
 echo $qcm->generer();
 
-echo '<pre>';
-print_r($qcm);
-echo '</pre>';
+//echo '<pre>';
+//print_r($qcm);
+//echo '</pre>';
 
 ?>
 
@@ -141,7 +145,7 @@ echo '</pre>';
     <title>Document</title>
 </head>
 <body>
-<a href="./level1.php">LEVEL 1</a>
+<a href="./index.php">Accueil</a>
 
 
 </body>
