@@ -6,6 +6,7 @@ class Artist
     private string $name;
     private string $nationality;
     private array $styles = array();
+    private array $albums = array();
 
 
     public function __toString(): string
@@ -42,6 +43,13 @@ class Artist
     {
         return $this->styles;
     }
+
+    public function getAlbums(): array
+    {
+        return $this->albums;
+    }
+
+
 
 }
 
