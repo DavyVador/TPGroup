@@ -260,9 +260,9 @@ $qcm->setAppreciation(array('0-10' => 'Pas top du tout...',
     '10-20' => 'Très bien...'));
 echo $qcm->generer();
 
-//echo '<pre>';
-//print_r($qcm);
-//echo '</pre>';
+echo '<pre>';
+print_r($qcm);
+echo '</pre>';
 
 ?>
 
