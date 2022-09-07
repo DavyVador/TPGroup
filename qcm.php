@@ -23,10 +23,11 @@ class Qcm
                 $reponse = $this->questions[$key]->getReponse($value);
                 if ($reponse->getStatut() === Reponse::BONNE_REPONSE) {
                     echo 'Bonne reponse : ' . $reponse->getReponse() . '</br> ';
-                    echo  $this->questions[$key]->getExplication() ;
+                    echo  $this->questions[$key]->getExplication(). '</br> ' ;
                 } else {
                     echo 'Mauvaise reponse : ' . $reponse->getReponse(). '</br> ';
-                    echo 'La bonne reponse : ' . $this->questions[$key]->getBonneReponse()->getReponse();
+                    echo 'La bonne reponse : ' . $this->questions[$key]->getBonneReponse()->getReponse(). '</br> ';
+                    echo  $this->questions[$key]->getExplication(). '</br> ' ;
                 }
             }
         }
@@ -63,7 +64,7 @@ class Question
         return $this->reponses;
     }
 
-    public function setExpliquations($explication): void
+    public function setExplications($explication): void
     {
         $this->explication = $explication;
     }
@@ -126,8 +127,15 @@ $question1 = new Question('Et paf, ça fait ...');
 $question1->ajouterReponse(new Reponse('Des mielpops'));
 $question1->ajouterReponse(new Reponse('Des chocapics', Reponse::BONNE_REPONSE));
 $question1->ajouterReponse(new Reponse('Des actimels'));
-$question1->setExpliquations('Et oui, la célèbre citation est « Et paf, ça fait des chocapics ! »');
+$question1->setExplications('Et oui, la célèbre citation est « Et paf, ça fait des chocapics ! »');
 $qcm->ajouterQuestions($question1);
+
+$question2 = new Question('POO signifie');
+$question2->ajouterReponse(new Reponse('Php Orienté Objet'));
+$question2->ajouterReponse(new Reponse('ProgrammatiOn Orientée'));
+$question2->ajouterReponse(new Reponse('Programmation Orientée Objet', Reponse::BONNE_REPONSE));
+$question2->setExplications('Sans commentaires si vous avez eu faux :-°');
+$qcm->ajouterQuestions($question2);
 echo $qcm->generer();
 
 //echo '<pre>';
