@@ -75,7 +75,6 @@ class Album
     private array $songList = array();
 
 
-
     public function getDate()
     {
         return $this->date;
@@ -105,10 +104,20 @@ class Album
     {
         return $this->songList;
     }
-}
 
-class Song {
+    public function albumDuration($songList): int
+    {
+        $songDuration = 0;
+        foreach ($this->songList as $key => $song) {
+            $songDuration += $song->getDuration();
+        }
+        return $songDuration;
+    }
+}
+class Song
+{
     use NameTrait;
+
     private string $duration;
     protected array $artistsList = array();
 
@@ -122,18 +131,15 @@ class Song {
         $this->duration = $duration;
     }
 
-    public function addArtistList ($artistsList): void
+    public function addArtistList($artistsList): void
     {
-            $this->artistsList[] = $artistsList;
+        $this->artistsList[] = $artistsList;
     }
 
-    public function getArtistsList (): array
+    public function getArtistsList(): array
     {
         return $this->artistsList;
     }
-
-
-
 
 }
 
@@ -144,26 +150,45 @@ $artist = (new Artist());
     $artist->setName('Metallica');
 
 $song = new Song();
-$song->setDuration('00:06:37');
-
+$song->setDuration('00:05:42');
+$t = DateTime::createFromFormat('H:i:s', $song->getDuration());
+$d = DateTime::createFromFormat('H:i:s', $song->getDuration());
 $song1 = new Song();
-$song1->setDuration('00:04:45');
+$song1->setDuration('00:04:56');
 
 $album = new Album();
 $album->addSong($song);
 $album->addSong($song1);
 $album->setPrice(150);
+$album->addSong(array($song1, $song));
 $song->addArtistList(array('John lennon', 'nirvana', 'britney spears'));
 
 
-var_dump($song->getArtistsList());
+var_dump($album->albumDuration($album));
 
-
+var_dump ($album->getSongList());
 echo $song->getDuration() ;
 echo '<br>';
 echo $artist;
 echo '<br>';
 echo $album->getPrice(). ' $ ';
+//echo $album->albumDuration($album);
 
-
-
+//$duration = 0;
+//foreach ($this->songList as $key => $song) {
+//    if (is_numeric($key)) {
+//        $this->songList[(int)$song] = $song;
+//    }
+//    else {
+//        [$min, $max] = explode('-', $key);
+//        if ($min > $max) {
+//            [$min, $max] = array($max, $min);
+//        }
+//        for ($i = (int)$min; $i <= $max; $i++) {
+//            $this->songList[$i] = $song;
+//        }
+//    }
+//
+//}
+//return $duration;
+//}
