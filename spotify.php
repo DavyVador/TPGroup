@@ -31,7 +31,7 @@ class Artist
 
     public function __toString(): string
     {
-        return $this->name.' '.$this->getBeginningYear();
+        return $this->name.' '.$this->getBeginningYear(). ' '.'(' . $this->getNationality(). ')';
     }
 
     public function getBeginningYear(): int
@@ -62,6 +62,11 @@ class Artist
     public function getAlbums(): array
     {
         return $this->albums;
+    }
+
+    public function addStyle(style $styles): void
+    {
+        $this->styles[] = $styles;
     }
 
 }
@@ -194,29 +199,94 @@ class playlist {
 
 }
 
+class User {
+    use NameTrait;
+    private int $userId;
+    private mail $mail;
+    private password $password;
+    private playlist $playlist;
+    private array $userPlaylist = array();
+
+    public function addSong(Song $song): void
+    {
+        $this->userPlaylist[] = $song;
+    }
+
+}
+
+//$artist = (new Artist());
+//    $artist->setBeginningYear(1981);
+//    $artist->setNationality('American');
+//    $artist->setName('Metallica');
+//
+//$song = new Song();
+//$song->setDuration('00:05:42');
+//$song1 = new Song();
+//$song1->setDuration('00:04:56');
+//
+//$album = new Album();
+//$album->addSong($song);
+//$album->addSong($song1);
+//$album->setPrice(150);
+//$song->addArtistList(array('John lennon', 'nirvana', 'britney spears'));
+//
+//
+//
+//var_dump($album->albumDuration($album));
+//echo $album->albumDuration($album);
+//echo '<br>';
+//echo $artist;
+//echo '<br>';
+//echo $album->getPrice(). ' $ ';
+//echo $album->albumDuration($album);
+
+///// Création des styles \\\\\
+$style1 = new Style();
+$style1->setName('Heavy metal');
+$style2 = new Style();
+$style2->setName('Trash metal');
+$style3 = new Style();
+$style3->setName('Hard rock');
+
+///// Création des artistes \\\\\
 $artist = (new Artist());
-    $artist->setBeginningYear(1981);
-    $artist->setNationality('American');
-    $artist->setName('Metallica');
+$artist->setBeginningYear(1981);
+$artist->setNationality('American');
+/// ????
+$artist->addStyle($style1);
+$artist->addStyle($style2);
+$artist->addStyle($style3);
+$artist->setName('Metallica');
 
 $song = new Song();
-$song->setDuration('00:05:42');
+$song->setDuration('00:06:37');
+
 $song1 = new Song();
-$song1->setDuration('00:04:56');
+$song1->setDuration('00:04:45');
 
 $album = new Album();
 $album->addSong($song);
 $album->addSong($song1);
-$album->setPrice(150);
-$song->addArtistList(array('John lennon', 'nirvana', 'britney spears'));
 
-
-
-var_dump($album->albumDuration($album));
-echo $album->albumDuration($album);
+echo $album->albumDuration();
 echo '<br>';
+
+$user = new User();
+/// ????
+$date = (new DateTime());
+$date->setDate(1990, 1, 1);
+//$user->setBirthDate($date);
+/// ????
+//echo $user->getAge();
+
+echo '<br>';
+
 echo $artist;
-echo '<br>';
-echo $album->getPrice(). ' $ ';
-//echo $album->albumDuration($album);
+echo '<ul>';
+foreach ($artist->getStyles() as $style) {
+    echo '<li>';
+    echo $style;
+    echo '</li>';
+}
+echo '</ul>';
 
