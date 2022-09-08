@@ -157,9 +157,25 @@ class Style {
 class playlist {
     use NameTrait;
 
-    private array $songList = array();
+    private array $playList = array();
     private string $creationDate;
     private string $modificationDate;
+
+
+    public function addSong($song): void
+    {
+        $this->playList[] = $song;
+    }
+
+    public function getSongList(): array
+    {
+        return $this->playList;
+    }
+
+
+
+
+
 
 }
 
