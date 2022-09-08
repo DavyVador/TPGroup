@@ -158,9 +158,8 @@ class playlist {
     use NameTrait;
 
     private array $playList = array();
-    private string $creationDate;
-    private string $modificationDate;
-
+    private DateTime $creationDate;
+    private DateTime $modificationDate;
 
     public function addSong($song): void
     {
@@ -172,10 +171,26 @@ class playlist {
         return $this->playList;
     }
 
+    public function getCreationDate(): DateTime
+    {
+        return $this->creationDate;
+    }
 
+    public function setCreationDate(): void
+    {
+        $this->creationDate = new DateTime();
 
+    }
 
+    public function getModificationDate(): DateTime
+    {
+        return $this->modificationDate;
+    }
 
+    public function setModificationDate(): void
+    {
+        $this->modificationDate = new DateTime();
+    }
 
 }
 
