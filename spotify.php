@@ -3,10 +3,11 @@
 /**
  * permet de definir des trait de class et ne bloque pas les extends
  */
-trait NameTrait {
+trait NameTrait
+{
     protected string $name;
 
-    public function getName()
+    public function __toString(): string
     {
         return $this->name;
     }
@@ -18,10 +19,9 @@ trait NameTrait {
 }
 
 
-
 class Artist
- {
-     use NameTrait;
+{
+    use NameTrait;
 
     private int $beginningYear;
     private string $nationality;
@@ -31,7 +31,7 @@ class Artist
 
     public function __toString(): string
     {
-        return $this->name.' '.$this->getBeginningYear(). ' '.'(' . $this->getNationality(). ')';
+        return $this->name . ' ' . $this->getBeginningYear() . ' ' . '(' . $this->getNationality() . ')';
     }
 
     public function getBeginningYear(): int
@@ -80,7 +80,7 @@ class Album
     private array $songList = array();
 
 
-    public function getDate()
+    public function getDate(): string
     {
         return $this->date;
     }
@@ -122,10 +122,11 @@ class Album
 
     public function time_to_interval($time): DateInterval
     {
-        $parts = explode(':',$time);
-        return new DateInterval('PT'.$parts[0].'H'.$parts[1].'M'.$parts[2].'S');
+        $parts = explode(':', $time);
+        return new DateInterval('PT' . $parts[0] . 'H' . $parts[1] . 'M' . $parts[2] . 'S');
     }
 }
+
 class Song
 {
     use NameTrait;
@@ -155,11 +156,13 @@ class Song
 
 }
 
-class Style {
+class Style
+{
     use NameTrait;
 }
 
-class playlist {
+class playlist
+{
     use NameTrait;
 
     private array $playList = array();
@@ -199,46 +202,33 @@ class playlist {
 
 }
 
-class User {
+class User
+{
     use NameTrait;
-    private int $userId;
-    private mail $mail;
-    private password $password;
+
     private playlist $playlist;
     private array $userPlaylist = array();
+    private datetime $birthDate;
 
     public function addSong(Song $song): void
     {
         $this->userPlaylist[] = $song;
     }
 
+    public function setBirthDate(Datetime $birthDate): void
+    {
+        $this->birthDate = $birthDate;
+    }
+
+    public function getAge(): int
+    {
+        $now = (int)(new DateTime())->format('Y');
+        return ($now - (int)($this->birthDate->format('Y')));
+    }
+
+
 }
 
-//$artist = (new Artist());
-//    $artist->setBeginningYear(1981);
-//    $artist->setNationality('American');
-//    $artist->setName('Metallica');
-//
-//$song = new Song();
-//$song->setDuration('00:05:42');
-//$song1 = new Song();
-//$song1->setDuration('00:04:56');
-//
-//$album = new Album();
-//$album->addSong($song);
-//$album->addSong($song1);
-//$album->setPrice(150);
-//$song->addArtistList(array('John lennon', 'nirvana', 'britney spears'));
-//
-//
-//
-//var_dump($album->albumDuration($album));
-//echo $album->albumDuration($album);
-//echo '<br>';
-//echo $artist;
-//echo '<br>';
-//echo $album->getPrice(). ' $ ';
-//echo $album->albumDuration($album);
 
 ///// Création des styles \\\\\
 $style1 = new Style();
@@ -252,7 +242,6 @@ $style3->setName('Hard rock');
 $artist = (new Artist());
 $artist->setBeginningYear(1981);
 $artist->setNationality('American');
-/// ????
 $artist->addStyle($style1);
 $artist->addStyle($style2);
 $artist->addStyle($style3);
@@ -260,7 +249,6 @@ $artist->setName('Metallica');
 
 $song = new Song();
 $song->setDuration('00:06:37');
-
 $song1 = new Song();
 $song1->setDuration('00:04:45');
 
@@ -268,19 +256,15 @@ $album = new Album();
 $album->addSong($song);
 $album->addSong($song1);
 
+$user = new User();
+$date = (new DateTime())
+    ->setDate(1990, 1, 1);
+$user->setBirthDate($date);
+
 echo $album->albumDuration();
 echo '<br>';
-
-$user = new User();
-/// ????
-$date = (new DateTime());
-$date->setDate(1990, 1, 1);
-//$user->setBirthDate($date);
-/// ????
-//echo $user->getAge();
-
+echo $user->getAge();
 echo '<br>';
-
 echo $artist;
 echo '<ul>';
 foreach ($artist->getStyles() as $style) {
