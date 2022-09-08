@@ -70,8 +70,8 @@ class Album
 {
     use NameTrait;
 
-    private $date;
-    private $prix;
+    private string $date;
+    private float $price;
     private array $songList = array();
 
 
@@ -86,40 +86,84 @@ class Album
         $this->date = $date;
     }
 
-    public function getPrix()
+    public function getPrice(): float
     {
-        return $this->prix;
+        return $this->price;
     }
 
-    public function setPrix($prix): void
+    public function setPrice($price): void
     {
-        $this->prix = $prix;
+        $this->price = $price;
     }
 
-    public function addSong($songList): object
+    public function addSong($songList): void
     {
         $this->songList[] = $songList;
     }
+
     public function getSongList(): array
     {
-        return $this->music;
+        return $this->songList;
     }
 }
 
 class Song {
     use NameTrait;
     private string $duration;
-    protected array $artists = array();
+    protected array $artistsList = array();
 
-    
+    public function getDuration(): string
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(string $duration): void
+    {
+        $this->duration = $duration;
+    }
+
+    public function addArtistList ($artistsList): void
+    {
+            $this->artistsList[] = $artistsList;
+    }
+
+    public function getArtistsList (): array
+    {
+        return $this->artistsList;
+    }
+
+
+
+
 }
 
 
+$artist = (new Artist());
+    $artist->setBeginningYear(1981);
+    $artist->setNationality('American');
+    $artist->setName('Metallica');
+
+$song = new Song();
+$song->setDuration('00:06:37');
+
+$song1 = new Song();
+$song1->setDuration('00:04:45');
+
+$album = new Album();
+$album->addSong($song);
+$album->addSong($song1);
+$album->setPrice(150);
+$song->addArtistList(array('John lennon', 'nirvana', 'britney spears'));
 
 
+var_dump($song->getArtistsList());
 
 
-$artist = new Artist();
-$artist->setName('Metallica');
-$artist->setBeginningYear(1981);
+echo $song->getDuration() ;
+echo '<br>';
 echo $artist;
+echo '<br>';
+echo $album->getPrice(). ' $ ';
+
+
+
