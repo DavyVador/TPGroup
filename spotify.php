@@ -95,9 +95,9 @@ class Album
         $this->price = $price;
     }
 
-    public function addSong($songList): void
+    public function addSong(Song $song): void
     {
-        $this->songList[] = $songList;
+        $this->songList[] = $song;
     }
 
     public function getSongList(): array
@@ -105,13 +105,20 @@ class Album
         return $this->songList;
     }
 
-    public function albumDuration($songList): int
+    public function albumDuration(): string
     {
-        $songDuration = 0;
+        $songDuration = new DateTime('00:00:00');
         foreach ($this->songList as $key => $song) {
-            $songDuration += $song->getDuration();
+            $d = $this->time_to_interval($song->getDuration());
+            $songDuration->add($d);
         }
-        return $songDuration;
+        return $songDuration->format('H:i:s');
+    }
+
+    public function time_to_interval($time): DateInterval
+    {
+        $parts = explode(':',$time);
+        return new DateInterval('PT'.$parts[0].'H'.$parts[1].'M'.$parts[2].'S');
     }
 }
 class Song
@@ -143,6 +150,18 @@ class Song
 
 }
 
+class Style {
+    use NameTrait;
+}
+
+class playlist {
+    use NameTrait;
+
+    private array $songList = array();
+    private string $creationDate;
+    private string $modificationDate;
+
+}
 
 $artist = (new Artist());
     $artist->setBeginningYear(1981);
@@ -151,8 +170,6 @@ $artist = (new Artist());
 
 $song = new Song();
 $song->setDuration('00:05:42');
-$t = DateTime::createFromFormat('H:i:s', $song->getDuration());
-$d = DateTime::createFromFormat('H:i:s', $song->getDuration());
 $song1 = new Song();
 $song1->setDuration('00:04:56');
 
@@ -160,35 +177,15 @@ $album = new Album();
 $album->addSong($song);
 $album->addSong($song1);
 $album->setPrice(150);
-$album->addSong(array($song1, $song));
 $song->addArtistList(array('John lennon', 'nirvana', 'britney spears'));
 
 
-var_dump($album->albumDuration($album));
 
-var_dump ($album->getSongList());
-echo $song->getDuration() ;
+var_dump($album->albumDuration($album));
+echo $album->albumDuration($album);
 echo '<br>';
 echo $artist;
 echo '<br>';
 echo $album->getPrice(). ' $ ';
 //echo $album->albumDuration($album);
 
-//$duration = 0;
-//foreach ($this->songList as $key => $song) {
-//    if (is_numeric($key)) {
-//        $this->songList[(int)$song] = $song;
-//    }
-//    else {
-//        [$min, $max] = explode('-', $key);
-//        if ($min > $max) {
-//            [$min, $max] = array($max, $min);
-//        }
-//        for ($i = (int)$min; $i <= $max; $i++) {
-//            $this->songList[$i] = $song;
-//        }
-//    }
-//
-//}
-//return $duration;
-//}
